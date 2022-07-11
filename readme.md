@@ -17,6 +17,8 @@
 
    ![image-20220711151116591](images/image-20220711151116591.png)
 
+如果已经打开`IDEA`中的某一个项目，然后需要从某一个远程仓库中拉取一个新的项目，可以选择 `File -> New -> Project from Version Control...`
+
 ## 2. Git基本操作
 
 ### 2.1 基本指令含义
