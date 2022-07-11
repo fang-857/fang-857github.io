@@ -45,6 +45,7 @@ public class Main {
         double mortgage = principal * rate * exp1 / (exp1 - 1);
 
         System.out.println(mortgage);
+
     }
 
 }
