@@ -4,9 +4,6 @@ import java.util.Scanner;
 
 public class Main {
 
-    //
-    // 计算公式：M = P[i(1+i)^n]/[(1+i)^n -1]
-
     /**
      * <p>需求：输入贷款金额、贷款年利率、贷款时长（年），输出月还款金额</p>
      * <p>计算公式：M = P[i(1+i)^n]/[(1+i)^n -1]</p>
