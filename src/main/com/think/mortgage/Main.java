@@ -1,5 +1,6 @@
 package com.think.mortgage;
 
+import java.text.NumberFormat;
 import java.util.Scanner;
 
 public class Main {
@@ -26,52 +27,40 @@ public class Main {
     public static void main(String[] args) {
         final byte MONTHS_IN_YEAR = 12; // 年中的月数
         final byte PERCENT = 100; // 百分数单位
-
-        Scanner scanner = new Scanner(System.in);
-
         // 输入贷款金额
-
-        int principal;
-
-        while (true) {
-            System.out.print("Principal：");
-            principal = scanner.nextInt();
-            // 贷款金额在1000 - 1000000之间
-            if (principal >= 1_000 && principal <= 1_000_000) break; // 跳出循环体，进入下一步输入环节
-
-            System.out.println("Principal must be between 1000 and 1000000.");
-        }
-
-        // 输入贷款金额
-        int years;
-        while (true) {
-            System.out.print("Years：");
-            years = scanner.nextInt();
-            if (years >= 1 && years <= 30) break; // 跳出循环体，进入下一步输入环节
-
-            System.out.println("Years must be between 1 and 30.");
-        }
+        int principal = (int) readNumber("Principal", 1_000, 1_000_000);
+        int years = (int) readNumber("Years", 1, 30);
         int numOfMonths = years * MONTHS_IN_YEAR;
-
-
         // 输入贷款年利率
-        float interest;
-        while (true) {
-            System.out.print("Interest：");
-            interest = scanner.nextFloat();
-            if (interest >= 1 && interest <= 5) break; // 跳出循环体，进入下一步输入环节
+        float interest = readNumber("Interest", 1, 5);
+        float rate = interest / PERCENT / MONTHS_IN_YEAR; // 年利率转换为月利率
+        double mortgage = calcMortgage(principal, rate, numOfMonths);
 
-            System.out.println("Interest must be between 1 and 5.");
-        }
-        float rate = interest / PERCENT / MONTHS_IN_YEAR;
+        // 从数字格式化器中获取一个现金格式化器
+        String format = NumberFormat.getCurrencyInstance().format(mortgage);
+        System.out.println(format);
 
-        // BigDecimal
+    }
 
+    public static double calcMortgage(int principal, float rate, int numOfMonths) {
         double exp1 = Math.pow(1 + rate, numOfMonths);
-        double mortgage = principal * rate * exp1 / (exp1 - 1);
+        return principal * rate * exp1 / (exp1 - 1);
+    }
 
-        System.out.println(mortgage);
+    /**
+     * <p>从控制台读取输入参数</p>
+     */
+    public static float readNumber(String prompt, int min, int max) {
+        float number;
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.print(prompt+ "：");
+            number = scanner.nextFloat();
+            if (number >= min && number <= max) break; // 跳出循环体，进入下一步输入环节
 
+            System.out.println(prompt + " must be between " + min + " and " + max + ".");
+        }
+        return number;
     }
 
 }
