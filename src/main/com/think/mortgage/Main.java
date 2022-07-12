@@ -5,6 +5,11 @@ import java.util.Scanner;
 
 public class Main {
 
+    // 把方法中的局部变量，转换成全局变量
+    // HOIST：提升
+    private final static byte PERCENT = 100; // 百分数单位
+    private final static byte MONTHS_IN_YEAR = 12; // 年中的月数
+
     /**
      * <p>需求：输入贷款金额、贷款年利率、贷款时长（年），输出月还款金额</p>
      * <p>计算公式：M = P[i(1+i)^n]/[(1+i)^n -1]</p>
@@ -25,24 +30,40 @@ public class Main {
      * @param args 控制台参数
      */
     public static void main(String[] args) {
-        final byte MONTHS_IN_YEAR = 12; // 年中的月数
-        final byte PERCENT = 100; // 百分数单位
         // 输入贷款金额
         int principal = (int) readNumber("Principal", 1_000, 1_000_000);
-        int years = (int) readNumber("Years", 1, 30);
+        byte years = (byte) readNumber("Years", 1, 30);
         int numOfMonths = years * MONTHS_IN_YEAR;
         // 输入贷款年利率
         float interest = readNumber("Interest", 1, 5);
-        float rate = interest / PERCENT / MONTHS_IN_YEAR; // 年利率转换为月利率
-        double mortgage = calcMortgage(principal, rate, numOfMonths);
+        double mortgage = calcMortgage(principal, interest, numOfMonths);
 
         // 从数字格式化器中获取一个现金格式化器
+        System.out.println("MORTGAGE");
+        System.out.println("--------");
         String format = NumberFormat.getCurrencyInstance().format(mortgage);
         System.out.println(format);
+        System.out.println("BALANCE");
+        System.out.println("--------");
+        for (int month = 1; month <= years * 12; month++) {
+            double balance = calcBalance(principal, interest, years, month);
+            System.out.println(NumberFormat.getCurrencyInstance().format(balance));
+        }
+
 
     }
 
-    public static double calcMortgage(int principal, float rate, int numOfMonths) {
+    public static double calcBalance(int principal, float interest, byte years, int numberOfPaymentsMade) {
+        float monthlyRate = interest / PERCENT / MONTHS_IN_YEAR;
+        float numberOfPayments = years * MONTHS_IN_YEAR;
+
+        double temp1 = Math.pow(1 + monthlyRate, numberOfPayments);
+        double temp2 = Math.pow(1 + monthlyRate, numberOfPaymentsMade);
+        return principal * (temp1 - temp2) / (temp1 - 1);
+    }
+
+    public static double calcMortgage(int principal, float interest, int numOfMonths) {
+        float rate = interest / PERCENT / MONTHS_IN_YEAR; // 年利率转换为月利率
         double exp1 = Math.pow(1 + rate, numOfMonths);
         return principal * rate * exp1 / (exp1 - 1);
     }
@@ -54,7 +75,7 @@ public class Main {
         float number;
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.print(prompt+ "：");
+            System.out.print(prompt + "：");
             number = scanner.nextFloat();
             if (number >= min && number <= max) break; // 跳出循环体，进入下一步输入环节
 
