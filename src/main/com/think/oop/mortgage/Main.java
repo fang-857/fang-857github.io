@@ -1,4 +1,4 @@
-package com.think.mortgage;
+package com.think.oop.mortgage;
 
 import java.text.NumberFormat;
 import java.util.Scanner;
