@@ -92,6 +92,7 @@ public class Small1oop {
             System.out.println("您的消费金额应该在0-"+balance+"元之间");
             return;
         }
+        System.out.println("jia le yiju hua");
         System.out.println("消费说明:");
         note =scanner.next();
         balance -=money;

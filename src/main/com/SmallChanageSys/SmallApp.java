@@ -9,5 +9,6 @@ public class SmallApp {
     public static void main(String[] args) {
         Small1oop small1oop = new Small1oop();
         small1oop.mainMenu();
+        System.out.println(111);
     }
 }
